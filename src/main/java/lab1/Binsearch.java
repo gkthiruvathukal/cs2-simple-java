@@ -17,6 +17,11 @@ public class Binsearch implements Iterable<SearchState> {
         this.item = item;
     }
 
+    public static Optional<Integer> search(int[] array, int item) {
+        Binsearch binSearch = new Binsearch(array, item);
+        return binSearch.go();
+    }
+
     public Iterator<SearchState> iterator() {
         return new SearchStateIterator(array, item);
     }
@@ -41,12 +46,22 @@ public class Binsearch implements Iterable<SearchState> {
 
     public static void main(final String[] args) {
         final int[] array = new int[]{2, 3, 5, 7, 11, 13, 17};
+
+        /* with progress */
         for (int i = 0; i < 20; i++) {
             System.out.printf(">>> Finding %d\n", i);
             Binsearch search = new Binsearch(array, i);
             search.addProgressListener(new ShowProgress());
             System.out.println("\t" + search.go());
         }
+
+        /* without progress */
+        for (int i = 0; i < 20; i++) {
+            System.out.printf(">>> Finding %d\n", i);
+            Binsearch search = new Binsearch(array, i);
+            System.out.println("\t" + search.go());
+        }
+
     }
 }
 
