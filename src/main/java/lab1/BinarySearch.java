@@ -6,25 +6,25 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Iterator;
 
-public class Binsearch implements Iterable<SearchResult> {
+public class BinarySearch implements Iterable<SearchState> {
 
     private int[] array;
     private int item;
 
-    public Binsearch(int[] array, int item) {
+    public BinarySearch(int[] array, int item) {
         this.array = array;
         this.item = item;
     }
 
-    public Iterator<SearchResult> iterator() {
-        return new SearchIterator(array, item);
+    public Iterator<SearchState> iterator() {
+        return new SearchStateIterator(array, item);
     }
 
     public Optional<Integer> search(boolean showProgress) {
-        Binsearch search = new Binsearch(array, item);
+        BinarySearch search = new BinarySearch(array, item);
 
-        final SearchIterator searchState = new SearchIterator(array, item);
-        for (SearchResult result : search) {
+        final SearchStateIterator searchState = new SearchStateIterator(array, item);
+        for (SearchState result : search) {
             if (showProgress)
                 System.out.println(result);
             if (result.found)
@@ -37,18 +37,18 @@ public class Binsearch implements Iterable<SearchResult> {
         final int[] array = new int[]{2, 3, 5, 7, 11, 13, 17};
         for (int i = 0; i < 20; i++) {
             System.out.printf(">>> Finding %d\n", i);
-            Binsearch search = new Binsearch(array, i);
+            BinarySearch search = new BinarySearch(array, i);
             System.out.println("\t" + search.search(true));
         }
     }
 }
 
 
-class SearchResult {
+class SearchState {
     public final int pos;
     public final boolean found;
 
-    public SearchResult(boolean found, int pos) {
+    public SearchState(boolean found, int pos) {
         this.pos = pos;
         this.found = found;
     }
@@ -64,9 +64,9 @@ class SearchResult {
 
 }
 
-/* could be an inner class - but avoiding this for pedagogy's sake */
+/* could be an inner class - but avoiding this for 271 pedagogy's sake */
 
-class SearchIterator implements Iterator<SearchResult> {
+class SearchStateIterator implements Iterator<SearchState> {
 
     private int[] array;
     private int low;
@@ -74,7 +74,7 @@ class SearchIterator implements Iterator<SearchResult> {
     private int item;
     private boolean done = false;
 
-    public SearchIterator(final int[] array, int item) {
+    public SearchStateIterator(final int[] array, int item) {
         this.array = array;
         this.low = 0;
         this.high = array.length - 1;
@@ -86,24 +86,24 @@ class SearchIterator implements Iterator<SearchResult> {
         return !done;
     }
 
-    public SearchResult next() throws NoSuchElementException {
+    public SearchState next() throws NoSuchElementException {
         if (this.done)
             throw new NoSuchElementException();
         if (low <= high) {
             final int mid = (low + high) / 2;
             if (item == array[mid]) {
                 this.done = true;
-                return new SearchResult(true, mid);
+                return new SearchState(true, mid);
             } else if (item < array[mid]) {
                 high = mid - 1;
-                return new SearchResult(false, high);
+                return new SearchState(false, high);
             } else {
                 low = mid + 1;
-                return new SearchResult(false, low);
+                return new SearchState(false, low);
             }
         } else {
             this.done = true;
-            return new SearchResult(false, low);
+            return new SearchState(false, low);
         }
     }
 
