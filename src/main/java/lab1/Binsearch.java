@@ -6,12 +6,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Iterator;
 
-public class BinarySearch implements Iterable<SearchState> {
+public class Binsearch implements Iterable<SearchState> {
 
     private int[] array;
     private int item;
 
-    public BinarySearch(int[] array, int item) {
+    public Binsearch(int[] array, int item) {
         this.array = array;
         this.item = item;
     }
@@ -21,10 +21,8 @@ public class BinarySearch implements Iterable<SearchState> {
     }
 
     public Optional<Integer> search(boolean showProgress) {
-        BinarySearch search = new BinarySearch(array, item);
-
         final SearchStateIterator searchState = new SearchStateIterator(array, item);
-        for (SearchState result : search) {
+        for (SearchState result : this) {
             if (showProgress)
                 System.out.println(result);
             if (result.found)
@@ -37,7 +35,7 @@ public class BinarySearch implements Iterable<SearchState> {
         final int[] array = new int[]{2, 3, 5, 7, 11, 13, 17};
         for (int i = 0; i < 20; i++) {
             System.out.printf(">>> Finding %d\n", i);
-            BinarySearch search = new BinarySearch(array, i);
+            Binsearch search = new Binsearch(array, i);
             System.out.println("\t" + search.search(true));
         }
     }
