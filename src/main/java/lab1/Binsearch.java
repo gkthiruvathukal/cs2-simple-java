@@ -20,7 +20,7 @@ public class Binsearch implements Iterable<SearchState> {
         return new SearchStateIterator(array, item);
     }
 
-    public Optional<Integer> search(boolean showProgress) {
+    public Optional<Integer> go(boolean showProgress) {
         final SearchStateIterator searchState = new SearchStateIterator(array, item);
         for (SearchState result : this) {
             if (showProgress)
@@ -36,7 +36,7 @@ public class Binsearch implements Iterable<SearchState> {
         for (int i = 0; i < 20; i++) {
             System.out.printf(">>> Finding %d\n", i);
             Binsearch search = new Binsearch(array, i);
-            System.out.println("\t" + search.search(true));
+            System.out.println("\t" + search.go(true));
         }
     }
 }
