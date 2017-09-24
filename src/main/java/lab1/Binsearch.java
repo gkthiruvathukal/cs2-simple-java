@@ -11,6 +11,7 @@ public class Binsearch implements Iterable<SearchState> {
 
     private int[] array;
     private int item;
+    private ProgressListener listener = new QuietProgressListener();
 
     public Binsearch(int[] array, int item) {
         this.array = array;
@@ -21,15 +22,22 @@ public class Binsearch implements Iterable<SearchState> {
         return new SearchStateIterator(array, item);
     }
 
-    public Optional<Integer> go(boolean showProgress) {
+    public Optional<Integer> go() {
         final SearchStateIterator searchState = new SearchStateIterator(array, item);
         for (SearchState state : this) {
-            if (showProgress)
-                System.out.println(state);
+            notifyListener(state);
             if (state.found)
                 return Optional.of(state.pos);
         }
         return Optional.empty();
+    }
+
+    public void addProgressListener(ProgressListener listener) {
+        this.listener = listener;
+    }
+
+    public void notifyListener(SearchState state) {
+        listener.showProgress(state);
     }
 
     public static void main(final String[] args) {
@@ -37,11 +45,26 @@ public class Binsearch implements Iterable<SearchState> {
         for (int i = 0; i < 20; i++) {
             System.out.printf(">>> Finding %d\n", i);
             Binsearch search = new Binsearch(array, i);
-            System.out.println("\t" + search.go(true));
+            search.addProgressListener(new ShowProgressListener());
+            System.out.println("\t" + search.go());
         }
     }
 }
 
+interface ProgressListener {
+    void showProgress(SearchState state);
+}
+
+class QuietProgressListener implements ProgressListener {
+    public void showProgress(SearchState state) { }
+}
+
+class ShowProgressListener implements ProgressListener {
+    public void showProgress(SearchState state) {
+        System.out.println("ShowProgressListener" + state);
+    }
+
+}
 
 class SearchState {
     public final int pos;
