@@ -23,11 +23,11 @@ public class Binsearch implements Iterable<SearchState> {
 
     public Optional<Integer> go(boolean showProgress) {
         final SearchStateIterator searchState = new SearchStateIterator(array, item);
-        for (SearchState result : this) {
+        for (SearchState state : this) {
             if (showProgress)
-                System.out.println(result);
-            if (result.found)
-                return Optional.of(result.pos);
+                System.out.println(state);
+            if (state.found)
+                return Optional.of(state.pos);
         }
         return Optional.empty();
     }
