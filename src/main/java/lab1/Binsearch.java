@@ -2,6 +2,7 @@ package lab1;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Iterator;
@@ -53,11 +54,10 @@ class SearchState {
 
     @Override
     public String toString() {
-        StringWriter sw = new StringWriter();
-        PrintWriter w = new PrintWriter(sw);
-        w.printf("pos = %d; found = %b", pos, found);
-        w.flush();
-        return sw.toString();
+        StringWriter writer = new StringWriter();
+        PrintWriter printer = new PrintWriter(writer);
+        printer.printf("pos = %d; found = %b", pos, found);
+        return writer.toString();
     }
 
 }
