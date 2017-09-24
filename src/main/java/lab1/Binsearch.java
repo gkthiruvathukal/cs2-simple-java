@@ -2,7 +2,6 @@ package lab1;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Iterator;
@@ -11,7 +10,7 @@ public class Binsearch implements Iterable<SearchState> {
 
     private int[] array;
     private int item;
-    private ProgressListener listener = new QuietProgressListener();
+    private SearchStateListener listener = new ShowNoProgress();
 
     public Binsearch(int[] array, int item) {
         this.array = array;
@@ -32,7 +31,7 @@ public class Binsearch implements Iterable<SearchState> {
         return Optional.empty();
     }
 
-    public void addProgressListener(ProgressListener listener) {
+    public void addProgressListener(SearchStateListener listener) {
         this.listener = listener;
     }
 
@@ -45,23 +44,23 @@ public class Binsearch implements Iterable<SearchState> {
         for (int i = 0; i < 20; i++) {
             System.out.printf(">>> Finding %d\n", i);
             Binsearch search = new Binsearch(array, i);
-            search.addProgressListener(new ShowProgressListener());
+            search.addProgressListener(new ShowProgress());
             System.out.println("\t" + search.go());
         }
     }
 }
 
-interface ProgressListener {
+interface SearchStateListener {
     void showProgress(SearchState state);
 }
 
-class QuietProgressListener implements ProgressListener {
+class ShowNoProgress implements SearchStateListener {
     public void showProgress(SearchState state) { }
 }
 
-class ShowProgressListener implements ProgressListener {
+class ShowProgress implements SearchStateListener {
     public void showProgress(SearchState state) {
-        System.out.println("ShowProgressListener" + state);
+        System.out.println(state);
     }
 
 }
