@@ -45,7 +45,16 @@ public class Binsearch implements Iterable<SearchState> {
     }
 
     public static void main(final String[] args) {
-        final int[] array = new int[]{2, 3, 5, 7, 11, 13, 17};
+
+        int[] array;
+        if (args.length > 0) {
+            System.out.println("Command line");
+            array = new int[args.length];
+            for (int i=0; i < args.length; i++)
+                array[i] = Integer.parseInt(args[i]);
+        } else {
+            array = new int[]{2, 3, 5, 7, 11, 13, 17};
+        }
 
         /* with progress */
         for (int i = 0; i < 20; i++) {
