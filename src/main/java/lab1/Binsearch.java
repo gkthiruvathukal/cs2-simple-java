@@ -75,11 +75,14 @@ public class Binsearch implements Iterable<SearchState> {
 }
 
 interface SearchStateListener {
-    void showProgress(SearchState state);
+    default void showProgress(SearchState state) {
+        // NOP
+    }
 }
 
 class ShowNoProgress implements SearchStateListener {
-    public void showProgress(SearchState state) { }
+    // use default progress method.
+    // This class mainly exists to document that no progress is to be reported, if used.
 }
 
 class ShowProgress implements SearchStateListener {
@@ -130,7 +133,7 @@ class SearchStateIterator implements Iterator<SearchState> {
         return !done;
     }
 
-    public SearchState next() throws NoSuchElementException {
+    public SearchState next()  {
         if (this.done)
             throw new NoSuchElementException();
         if (low <= high) {
